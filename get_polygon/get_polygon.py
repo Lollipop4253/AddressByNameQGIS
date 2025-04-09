@@ -339,7 +339,7 @@ class AddressToPolygon:
             None,
             "Выберите файл",
             "",
-            "Таблицы (*.csv *.xls *.xlsx)"
+            "Таблицы (*.csv)"
         )
         if file_path:
             self.file_path = file_path
