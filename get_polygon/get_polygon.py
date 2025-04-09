@@ -336,7 +336,7 @@ class AddressToPolygon:
 
     def uploadFile(self):
         file_path, _ = QFileDialog.getOpenFileName(
-            None,
+            self.iface.mainWindow(),
             "Выберите файл",
             "",
             "Таблицы (*.csv)"
