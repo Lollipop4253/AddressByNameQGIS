@@ -1,14 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <plugins>
-  <pyqgis_plugin>
-    <name>AddressByName</name>
-    <version>0.1</version>
+  <pyqgis_plugin name="AddressByName" version="0.1">
     <description>тест</description>
-    <qgisMinimumVersion>3.0</qgisMinimumVersion>
-    <download_url>https://lollipop4253.github.io/AddressByNameQGIS/zip/get_polygon.zip</download_url>
-    <file_name>get_polygon.zip</file_name>
+    <about>Плагин для получения полигона по адресу.</about>
+    <version>0.1</version>
+    <qgis_minimum_version>3.0</qgis_minimum_version>
     <author>Bezdares</author>
     <email>bezdares@gmail.com</email>
+    <download_url>https://lollipop4253.github.io/AddressByNameQGIS/zip/get_polygon.zip</download_url>
+    <file_name>get_polygon.zip</file_name>
     <experimental>True</experimental>
+    <deprecated>False</deprecated>
+    <homepage>https://lollipop4253.github.io/AddressByNameQGIS/</homepage>
+    <tracker>https://github.com/lollipop4253/AddressByNameQGIS/issues</tracker>
+    <repository>https://github.com/lollipop4253/AddressByNameQGIS</repository>
+    <tags>address, polygon, geocoding</tags>
+    <category>Plugins</category>
   </pyqgis_plugin>
 </plugins>
