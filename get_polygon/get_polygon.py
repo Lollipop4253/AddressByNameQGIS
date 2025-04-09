@@ -481,6 +481,8 @@ class AddressToPolygon:
                 except:
                     pass
             else:
+                if not self.file_path:
+                    return
                 print("Выбранный файл:", self.file_path)
                 layer = self.paintPolygons(geolocator, self.file_path, layer, provider)
                 if not layer:
