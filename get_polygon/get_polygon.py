@@ -343,7 +343,9 @@ class AddressToPolygon:
         )
         if file_path:
             self.file_path = file_path
-            self.dlg.uploadFileButton.setText(file_path.split("/")[-1])  
+            self.dlg.uploadFileButton.setText(file_path.split("/")[-1])
+        else:
+            self.file_path = ""
         return
 
 
@@ -481,7 +483,7 @@ class AddressToPolygon:
                 except:
                     pass
             else:
-                if not self.file_path:
+                if self.file_path == "":
                     return
                 print("Выбранный файл:", self.file_path)
                 layer = self.paintPolygons(geolocator, self.file_path, layer, provider)
