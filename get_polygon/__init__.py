@@ -22,22 +22,10 @@
  ***************************************************************************/
  This script initializes the plugin, making it known to QGIS.
 """
-import subprocess
-import sys
-
 
 # noinspection PyPep8Naming
-def classFactory(iface):  # pylint: disable=invalid-name
-    """Load AddressToPolygon class from file AddressToPolygon.
-
-    :param iface: A QGIS interface instance.
-    :type iface: QgsInterface
-    """
-    install_packages()
-
-    from .get_polygon import AddressToPolygon
-    return AddressToPolygon(iface)
-
+import subprocess
+import sys
 
 REQUIRED_PACKAGES = ["geopy", "overpy", "pandas"]
 
@@ -50,3 +38,12 @@ def install_packages():
                 subprocess.check_call([sys.executable, "-m", "pip", "install", package])
             except Exception as e:
                 print(f"Ошибка установки {package}: {e}")
+
+
+def classFactory(iface):  # pylint: disable=invalid-name
+    """Load AddressToPolygon class from file AddressToPolygon."""
+    install_packages()
+
+    from .get_polygon import AddressToPolygon
+    return AddressToPolygon(iface)
+
