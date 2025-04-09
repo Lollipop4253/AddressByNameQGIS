@@ -24,18 +24,40 @@
 """
 
 # noinspection PyPep8Naming
-import os
+
+
 import sys
+import os
+import subprocess
 
-plugin_dir = os.path.dirname(__file__)
-libs_path = os.path.join(plugin_dir, 'libs')
-if libs_path not in sys.path:
-    sys.path.insert(0, libs_path)
+REQUIRED_PACKAGES = ['overpy', 'geopy', 'pandas']
+INSTALLED_FLAG_FILE = os.path.join(os.path.dirname(__file__), 'deps_installed.flag')
 
 
+def install_dependencies():
+    for pkg in REQUIRED_PACKAGES:
+        try:
+            __import__(pkg)
+        except ImportError:
+            print(f"[Plugin] Устанавливаем зависимость: {pkg}")
+            subprocess.check_call([sys.executable, "-m", "pip", "install", pkg])
+
+
+# noinspection PyPep8Naming
 def classFactory(iface):  # pylint: disable=invalid-name
-    """Load AddressToPolygon class from file AddressToPolygon."""
+    if not os.path.exists(INSTALLED_FLAG_FILE):
+        try:
+            install_dependencies()
+            # помечаем, что зависимости установлены
+            with open(INSTALLED_FLAG_FILE, 'w') as f:
+                f.write('ok')
+        except Exception as e:
+            from qgis.PyQt.QtWidgets import QMessageBox
+            QMessageBox.critical(None, "Ошибка установки зависимостей",
+                                 f"Не удалось установить зависимости:\n{str(e)}")
+            raise e  # Прекращаем загрузку плагина
 
     from .get_polygon import AddressToPolygon
     return AddressToPolygon(iface)
+
 
