@@ -29,6 +29,10 @@ from PyQt5.QtWidgets import QFileDialog
 import time
 import re
 
+from geopy.geocoders import Nominatim
+import overpy
+import pandas as pd
+
 from qgis.core import (
     QgsVectorLayer,
     QgsFields,
@@ -54,9 +58,6 @@ class AddressToPolygon:
     """QGIS Plugin Implementation."""
 
     def __init__(self, iface):
-        from geopy.geocoders import Nominatim
-        import overpy
-        import pandas as pd
         """Constructor.
 
         :param iface: An interface instance that will be passed to this class
