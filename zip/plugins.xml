@@ -1,5 +1,5 @@
 <plugins>
-  <pyqgis_plugin name="AddressByName" version="0.1">
+  <pyqgis_plugin name="get_polygon" version="0.1">
     <description>тест</description>
     <about>Плагин для получения полигона по адресу.</about>
     <version>0.1</version>
