@@ -24,25 +24,17 @@
 """
 
 # noinspection PyPep8Naming
-import subprocess
+import os
 import sys
 
-REQUIRED_PACKAGES = ["geopy", "overpy", "pandas"]
-
-def install_packages():
-    for package in REQUIRED_PACKAGES:
-        try:
-            __import__(package)
-        except ImportError:
-            try:
-                subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-            except Exception as e:
-                print(f"Ошибка установки {package}: {e}")
+plugin_dir = os.path.dirname(__file__)
+libs_path = os.path.join(plugin_dir, 'libs')
+if libs_path not in sys.path:
+    sys.path.insert(0, libs_path)
 
 
 def classFactory(iface):  # pylint: disable=invalid-name
     """Load AddressToPolygon class from file AddressToPolygon."""
-    install_packages()
 
     from .get_polygon import AddressToPolygon
     return AddressToPolygon(iface)
