@@ -8,7 +8,8 @@ qgisMinimumVersion=3.0
 description=get polygon by address name
 version=0.1
 author=Bezdares
-email=bezdares@mail.ru
+email=bezdares@gmail.com
+requires=geopy,overpy,pandas
 
 about=Provide a brief description of the plugin and its purpose.
 

@@ -5,11 +5,10 @@
     <version>0.1</version>
     <description>тест</description>
     <qgisMinimumVersion>3.0</qgisMinimumVersion>
-    <download_url>https://example.com/plugins/MyPlugin.zip</download_url>
-    <homepage>https://example.com</homepage>
-    <file_name>MyPlugin.zip</file_name>
-    <author>Твоё Имя</author>
-    <email>you@example.com</email>
-    <experimental>False</experimental>
+    <download_url>https://lollipop4253.github.io/AddressByNameQGIS/zip/get_polygon.zip</download_url>
+    <file_name>get_polygon.zip</file_name>
+    <author>Bezdares</author>
+    <email>bezdares@gmail.com</email>
+    <experimental>True</experimental>
   </pyqgis_plugin>
 </plugins>
