@@ -10,15 +10,15 @@
     <height>291</height>
    </rect>
   </property>
-    <property name="minimumSize">
+  <property name="minimumSize">
    <size>
-     <width>392</width>
+    <width>392</width>
     <height>291</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-     <width>392</width>
+    <width>392</width>
     <height>291</height>
    </size>
   </property>
@@ -49,6 +49,9 @@
      <width>351</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="dragEnabled">
     <bool>false</bool>
@@ -174,11 +177,14 @@ QPushButton:hover {
   <widget class="QPushButton" name="uploadFileButton">
    <property name="geometry">
     <rect>
-     <x>150</x>
-     <y>80</y>
-     <width>75</width>
-     <height>23</height>
+     <x>135</x>
+     <y>110</y>
+     <width>121</width>
+     <height>31</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font-size: 14px;</string>
    </property>
    <property name="text">
     <string>PushButton</string>
@@ -187,8 +193,8 @@ QPushButton:hover {
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>60</x>
-     <y>40</y>
+     <x>65</x>
+     <y>70</y>
      <width>261</width>
      <height>31</height>
     </rect>
