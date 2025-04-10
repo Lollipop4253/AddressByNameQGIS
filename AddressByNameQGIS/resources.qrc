@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/plugins/get_polygon" >
+    <qresource prefix="/plugins/AddressByNameQGIS" >
         <file>icon.png</file>
     </qresource>
 </RCC>

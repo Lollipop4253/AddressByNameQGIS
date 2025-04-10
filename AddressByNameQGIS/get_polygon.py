@@ -24,7 +24,7 @@
 from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication,QVariant
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction
-from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QFileDialog,QApplication
 
 import time
 import re
@@ -83,8 +83,7 @@ class AddressToPolygon:
 
         # Declare instance attributes
         self.actions = []
-        self.menu = self.tr(u'&AddressToPolygon')
-
+        self.menu = self.tr(u'&AddressByName')
         # Check if plugin was started the first time in current QGIS session
         # Must be set in initGui() to survive plugin reloads
         self.first_start = None
@@ -104,7 +103,7 @@ class AddressToPolygon:
         :rtype: QString
         """
         # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
-        return QCoreApplication.translate('AddressToPolygon', message)
+        return QCoreApplication.translate('AddressByName', message)
 
 
     def add_action(
@@ -185,14 +184,13 @@ class AddressToPolygon:
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
 
-        icon_path = ':/plugins/get_polygon/icon.png'
+        icon_path = os.path.join(os.path.dirname(__file__), 'icon.png')
         self.add_action(
             icon_path,
             text=self.tr(u'Click for start'),
             callback=self.run,
             parent=self.iface.mainWindow())
-
-        # will be set False in run()
+        # will be set False in run()s
         self.first_start = True
 
 
@@ -200,7 +198,7 @@ class AddressToPolygon:
         """Removes the plugin menu item and icon from QGIS GUI."""
         for action in self.actions:
             self.iface.removePluginMenu(
-                self.tr(u'&AddressToPolygon'),
+                self.tr(u'&AddressByName'),
                 action)
             self.iface.removeToolBarIcon(action)
 
@@ -336,12 +334,14 @@ class AddressToPolygon:
 
 
     def uploadFile(self):
+        QApplication.processEvents()
         file_path, _ = QFileDialog.getOpenFileName(
             self.iface.mainWindow(),
             "Выберите файл",
             "",
             "Таблицы (*.csv)"
         )
+        self.dlg.raise_()
         if file_path:
             self.file_path = file_path
             self.dlg.uploadFileButton.setText(file_path.split("/")[-1])
@@ -357,7 +357,7 @@ class AddressToPolygon:
             osm_id = location.raw.get("osm_id")
         else:
             self.iface.messageBar().pushMessage( f"Адрес не найден",level=Qgis.Critical, duration=3)
-            return
+            return 
 
         points = self.getPoints(f"""
             [out:json];
@@ -368,7 +368,7 @@ class AddressToPolygon:
         """)
         return points
     
-    def paintPolygons(self, geolocator,file_path,layer,provider):
+    def paintPolygons(self, geolocator, file_path, layer, provider):
         table = pd.read_csv(file_path)
         attributesName = table.columns.tolist()
         provider.addAttributes([QgsField(title, QVariant.String) for title in attributesName])
@@ -408,16 +408,22 @@ class AddressToPolygon:
 
         # Create the dialog with elements (after translation) and keep reference
         # Only create GUI ONCE in callback, so that it will only load when the plugin is started
+    
         if self.first_start == True:
             self.first_start = False
             self.dlg = AddressToPolygonDialog()
             self.showFirstPage()
+            uploadFileButton = self.dlg.uploadFileButton
+            uploadFileButton.clicked.connect(self.uploadFile)
         elif self.first_start == False:
-            if self.currentPage:
+            if self.dlg.isVisible():
+                self.dlg.raise_()
+                return
+            elif self.currentPage:
                 self.showSecondPage()
             else:
                 self.showFirstPage()
-
+        print(self.dlg.isVisible())
         # show the dialog
         layers = QgsProject.instance().mapLayers().values()
         self.dlg.comboBox.clear()
@@ -436,14 +442,12 @@ class AddressToPolygon:
         
         lineEdit = self.dlg.lineEdit
         checkBox = self.dlg.checkBox
-        uploadFileButton = self.dlg.uploadFileButton
         label_3 = self.dlg.label_3
 
         first_page.clicked.connect(self.showFirstPage)
         second_page.clicked.connect(self.showSecondPage)
-        uploadFileButton.clicked.connect(self.uploadFile)
+        self.file_path = ""
         self.dlg.uploadFileButton.setText("Загрузить csv")
-
         self.dlg.show()
         # Run the dialog event loop
         result = self.dlg.exec_()
@@ -470,19 +474,21 @@ class AddressToPolygon:
                     address_query = self.getAddressQuery(address)
                 print(address_query)
                 points = self.searchLocation(geolocator, address_query)
-                provider.addAttributes([QgsField("address_mo", QVariant.String)])
-                layer.updateFields()
-                try:
-                    polygon = QgsGeometry.fromPolygonXY([points])
-
-                    feature = QgsFeature()
-                    feature.setGeometry(polygon)
-                    feature.setFields(layer.fields())
-                    feature.setAttribute("address_mo", address)
-                    provider.addFeatures([feature])
-                    layer.updateExtents()
-                except:
-                    pass
+                if points:
+                    try:
+                        provider.addAttributes([QgsField("address_mo", QVariant.String)])
+                        layer.updateFields()
+                        polygon = QgsGeometry.fromPolygonXY([points])
+                        feature = QgsFeature()
+                        feature.setGeometry(polygon)
+                        feature.setFields(layer.fields())
+                        feature.setAttribute("address_mo", address)
+                        provider.addFeatures([feature])
+                        layer.updateExtents()
+                    except:
+                        return
+                else:
+                    return
             else:
                 if self.file_path == "":
                     return
