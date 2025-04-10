@@ -3,7 +3,7 @@
     <description>тест</description>
     <about>Плагин для получения полигона по адресу.</about>
     <version>0.1</version>
-    <qgis_minimum_version>3.0/<qgis_minimum_version>
+    <qgis_minimum_version>3.0</qgis_minimum_version>
     <author>Bezdares</author>
     <email>bezdares@gmail.com</email>
     <download_url>https://lollipop4253.github.io/AddressByNameQGIS/zip/AddressByNameQGIS.zip</download_url>
