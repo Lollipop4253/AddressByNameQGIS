@@ -23,15 +23,24 @@
  This script initializes the plugin, making it known to QGIS.
 """
 import pip
+from qgis.PyQt.QtWidgets import QDockWidget
+from qgis.utils import iface
+from console.console import show_console 
 
 def classFactory(iface):  # pylint: disable=invalid-name
     try:
         import overpy
         import geopy
         import pandas
-    except:
-        pip.main(["install","overpy","geopy","pandas"])
+    except ImportError:
+        open_python_console()
+        pip.main(["install", "overpy", "geopy", "pandas", "--user"])
+
     from .get_polygon import AddressToPolygon
     return AddressToPolygon(iface)
 
 
+def open_python_console():
+    console = iface.mainWindow().findChild(QDockWidget, "PythonConsole")
+    if not console:
+        show_console()
