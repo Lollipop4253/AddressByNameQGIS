@@ -22,10 +22,15 @@
  ***************************************************************************/
  This script initializes the plugin, making it known to QGIS.
 """
-
+import pip
 
 def classFactory(iface):  # pylint: disable=invalid-name
-
+    try:
+        import overpy
+        import geopy
+        import pandas
+    except:
+        pip.main(["install","overpy","geopy","pandas"])
     from .get_polygon import AddressToPolygon
     return AddressToPolygon(iface)
 
